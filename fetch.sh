@@ -23,6 +23,7 @@ wget --no-clobber -q https://safebooru.org/thumbnails/1962/thumbnail_4f7cc41e6ad
 wget --no-clobber -q https://safebooru.org/thumbnails/1962/thumbnail_16c11a13fb4dbed639db3c46cb23f11a1ee028da.jpg?2047665
 wget --no-clobber -q https://safebooru.org/thumbnails/1331/thumbnail_ed3f1ba1502860caa514d26084a0ace014258924.jpg?1384596
 wget --no-clobber -q https://safebooru.org/thumbnails/911/thumbnail_611804496d7425a4a710f6834ccd17815d235d00.jpg?916536
+ls -v | cat -n | while read n f; do mv -n "$f" "$n.jpg"; done 
 cd ..
 
 mkdir -p pikachu; cd pikachu
@@ -75,4 +76,5 @@ wget --no-clobber -q https://safebooru.org/thumbnails/181/thumbnail_547ae33acb1e
 wget --no-clobber -q https://safebooru.org/thumbnails/111/thumbnail_82fec4e773ca4bd49f54148c5cf23b41597cf73f.jpg?110924
 wget --no-clobber -q https://safebooru.org/thumbnails/233/thumbnail_dfdc4a4f32999effcc4fc128b7761d04a6d96684.jpg?232457
 wget --no-clobber -q https://safebooru.org/thumbnails/254/thumbnail_23c2700f19f9f9055818da1fb18ea231a096c739.jpg?253821
+ls -v | cat -n | while read n f; do mv -n "$f" "$n.jpg"; done 
 cd ..
