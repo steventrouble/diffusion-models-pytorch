@@ -118,7 +118,8 @@ def launch():
     args.batch_size = 14
     args.image_size = 64
     args.num_classes = 10
-    args.dataset_path = r"~/dataset/"
+    args.min_size = 2 ** 14
+    args.dataset_path = r"../dataset/"
     args.device = "cuda"
     args.lr = 3e-4
     train(args)

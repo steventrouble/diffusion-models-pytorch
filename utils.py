@@ -1,6 +1,8 @@
 import os
 import torch
 import torchvision
+from datasets import load_dataset
+from transformers import AutoTokenizer
 from PIL import Image
 from matplotlib import pyplot as plt
 from torch.utils.data import DataLoader
@@ -28,8 +30,15 @@ def get_data(args):
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
-    dataset = torchvision.datasets.ImageFolder(args.dataset_path, transform=transforms)
-    dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
+    tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+    dataset = load_dataset(args.dataset_path, split="train", sample_by="document")
+    dataset = dataset.map(lambda example: {"length": len(example['text'])})
+    dataset = dataset.filter(lambda example: example['length'] >= (args.min_size))
+    dataset = dataset.sort('length')
+    # TODO(sweiss): Bucket things by length so we don't need to pad files too much when batching
+    dataset = dataset.map(lambda examples: tokenizer(examples["text"]), batched=True)
+    dataset = dataset.shuffle()
+    dataloader = DataLoader(dataset, batch_size=args.batch_size)
     return dataloader
 
 
