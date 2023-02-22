@@ -1,0 +1,5 @@
+dataset/**
+results/**
+runs/**
+models/**
+__pycache__
