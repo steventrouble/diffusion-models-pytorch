@@ -23,20 +23,15 @@ def save_images(images, path, **kwargs):
     im.save(path)
 
 
+def filter_length(example, args):
+    length = example['length']
+    return length >= (args.min_size) and length <= (args.max_size)
+
 def get_data(args):
-    transforms = torchvision.transforms.Compose([
-        torchvision.transforms.Resize(80),  # args.image_size + 1/4 *args.image_size
-        torchvision.transforms.RandomResizedCrop(args.image_size, scale=(0.8, 1.0)),
-        torchvision.transforms.ToTensor(),
-        torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    ])
-    tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+    tokenizer = AutoTokenizer.from_pretrained("xlnet")
     dataset = load_dataset(args.dataset_path, split="train", sample_by="document")
     dataset = dataset.map(lambda example: {"length": len(example['text'])})
-    dataset = dataset.filter(lambda example: example['length'] >= (args.min_size))
-    dataset = dataset.sort('length')
-    # TODO(sweiss): Bucket things by length so we don't need to pad files too much when batching
-    dataset = dataset.map(lambda examples: tokenizer(examples["text"]), batched=True)
+    dataset = dataset.filter(lambda example: filter_length(example, args))
     dataset = dataset.shuffle()
     dataloader = DataLoader(dataset, batch_size=args.batch_size)
     return dataloader

@@ -119,10 +119,11 @@ def launch():
     args.image_size = 64
     args.num_classes = 10
     args.min_size = 2 ** 14
-    args.dataset_path = r"../dataset/"
+    args.max_size = 2 ** 18
+    args.dataset_path = r"./dataset/"
     args.device = "cuda"
     args.lr = 3e-4
-    train(args)
+    daget_data(args)
 
 
 if __name__ == '__main__':
